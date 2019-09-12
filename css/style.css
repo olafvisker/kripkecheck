@@ -1,0 +1,376 @@
+* {
+    font-family: 'Raleway', sans-serif;
+}
+
+html,
+body {
+    margin: 0;
+    height: 100%;
+    line-height: 21px;
+}
+
+input[type='text'],
+input[type="number"] {
+    font-size: 14px;
+    color: #032a3b;
+    font-weight: 700;
+    letter-spacing: 2px;
+    vertical-align: bottom
+}
+
+body {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+a {
+    text-decoration: none;
+    color: #c5585d;
+}
+
+a:hover {
+    color: red;
+}
+
+#controlPanel {
+    width: 30%;
+    height: 100%;
+    background: #f2fafc;
+    box-shadow: 5px 0px 2px rgba(0, 0, 0, .2);
+    z-index: 1;
+    overflow: hidden;
+}
+
+#controlPanel.widePanel {
+    width: 100%;
+}
+
+#controlPanelChild {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-right: 17px;
+}
+
+#compactPanelChild {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#graphCanvas {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    height: 100%;
+    background: #7cdbd5;
+}
+
+img {
+    max-width: 100%;
+    object-fit: contain;
+    margin-top: 10px;
+}
+
+figcaption {
+    color: gray;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 28px;
+    text-align: center;
+    color: #c5585d;
+    font-weight: 300;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+}
+
+h2 {
+    font-size: 18px;
+    color: #02c8a7;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    font-size: 16px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    color: #02c8a7;
+}
+
+button {
+    background-color: #ffffff;
+    border: 2px solid #7cdbd5;
+    border-radius: 13px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    height: 25px;
+    width: 25px;
+    outline: none;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    margin-right: 10px;
+}
+
+button:hover {
+    border: 2px solid #f6323e;
+}
+
+button:active {
+    border: 2px dashed #c5585d;
+}
+
+#worldTxt {
+    width: 15%;
+    text-align: center;
+    margin-right: 10px;
+}
+
+input[type="text"],
+input[type="number"] {
+    padding: 3px;
+    border-radius: 5px;
+    border: solid 2px #c9c9c9;
+    -webkit-transition: border 0.3s;
+    transition: border 0.3s;
+    outline: none;
+    width: 100%;
+}
+
+input[type="text"]:focus,
+input[type="text"].focus {
+    border: solid 2px #9f9f9f;
+}
+
+.inline {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+sup {
+    vertical-align: super;
+    font-size: smaller;
+}
+
+p,
+table {
+    font-size: 14px;
+    font-weight: 300;
+    color: #032a3b;
+    width: 100%;
+}
+
+table.compactTable {
+    width: 50%;
+    margin-top: 10px ;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+td {
+    text-align: left;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed #bbbbbb;
+}
+
+td.cleanTable {
+    text-align: center;
+    border-bottom: 0px;
+}
+
+td.header {
+    color: #032a3b;
+    font-weight: 700;
+}
+
+td.leftHeader {
+    text-align: left;
+    padding: 0px;
+}
+
+tr:hover.selectable {
+    background-color: #f4f4f4;
+}
+
+.firstRow {
+    white-space: pre;
+    font-weight: 700;
+}
+
+.indent {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#controlPanelHeader {
+    padding-top: 16px;
+    background: rgba(255, 255, 255, 1);
+}
+
+#infoLink {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 18px;
+    color: gray;
+    text-decoration: none;
+}
+
+#infoLink:hover {
+    color: #c5585d;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 25px;
+    height: 51px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #7cdbd5;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 17px;
+    width: 17px;
+    left: 4px;
+    top: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #cccccc;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #cccccc;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateY(26px);
+    transform: translateY(26px);
+}
+
+.slider.round {
+    border-radius: 25px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    margin: 10px 0;
+    width: 100%;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 10px;
+    cursor: pointer;
+    background: #f9be02;
+    border-radius: 5px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    background: #f9be02;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -5px;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #F9BE02;
+}
+
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 10px;
+    cursor: pointer;
+    background: #f9be02;
+    border-radius: 5px;
+}
+
+input[type=range]::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    background: #f9be02;
+    cursor: pointer;
+}
+
+input[type=range]::-ms-track {
+    width: 100%;
+    height: 10px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+    background: #f9be02;
+    border-radius: 10px;
+}
+
+input[type=range]::-ms-fill-upper {
+    background: #f9be02;
+    border-radius: 10px;
+}
+
+input[type=range]::-ms-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    background: #f9be02;
+    cursor: pointer;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+    background: #f9be02;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+    background: #f9be02;
+}

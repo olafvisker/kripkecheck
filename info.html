@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Logic Solver</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Logic solver for MAS course">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,300,400" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="controlPanel" class="widePanel">
+        <div id="controlPanelChild">
+            <div id="controlPanelHeader">
+                <a id="infoLink" href="index.html">←</a>
+                <h1>Information</h1>
+                <hr>
+            </div>
+            <div id="compactPanelChild">
+                <h2>About</h2>
+                <div class="indent">
+                    <p>This website offers a modal logic model checker for Kripke models. These models can be build graphically using the provided interface on the
+                        <a href="index.html">main page</a>. The model checker was developed for the <a href="https://www.rug.nl/ocasys/let/vak/show?code=KIM.MAS03">Multi Agent Systems course</a> at the
+                        <a href="http://www.rug.nl/">Rijksuniversiteit Groningen</a> for the academic year of 2017/2018.
+                    </p>
+                </div>
+                <hr>
+                <h2>Goal</h2>
+                <div class="indent">
+                    <p>The purpose of our application is to offer an intuitive tool to graphically create Kripke models. These models in turn allow inquiries to be made on them. Inspiration was drawn from homework assignments for the aforementioned course.
+                        These assignments required students to draw several Kripke models. When using pen and paper one is able to quickly draw a Kripke model, but is limited by its abilities to correct mistakes. Using digital software to create Kripke
+                        models is tedious, but does offer some flexibility. Our tool offers, in our view, the best of both worlds; fast iteration and flexibility. As such our tool aims to reduce human error when analyzing Kripke models.
+                    </p>
+                </div>
+                <hr>
+
+                <h2>Summary of the used logic</h2>
+                <div class="indent">
+                <p>
+                    The system has the main purpose of deducing truth values of formulas based on epistemic logic. Epistemic logic is the logic considering knowledge: how do we reason about what we and others know? This logic turns out to be crucial in describing negotiating in the field of economics, parallel processes in the field of computer science and multi-agent systems in the field of Artificial Intelligence. 
+                    Besides, epistemic logic is technically interesting: it has nice semantics.
+                </p>
+                <p>
+                    Epistemic logic is an extension of <a href="https://en.wikipedia.org/wiki/Classical_logic">classical propositional logic</a> and therefore the provided system is also able to process pure propositional formulas except for quantifiers. 
+                </p>
+                <p>
+
+                    Kripke introduced a possible worlds semantics for this logic, in which a possible world is defined as an epistemic alternative for an agent in the logic.
+                    A Kripke model contains these worlds, with relations between worlds with respect to the agent. You may view agents as humans, or as computer processors in a distributed system, or as other objects, according to the context.
+                    Formally A Kripke model M is a tuple (S,&#960, R1, ..., Rm) where: S is a non-empty set of states and &#960 is a truth assignment to the propositional atoms per state. Figure 2 shows an example of a Kripke model. The R arrows indicate the relationships between states with corresponding truth values for atoms, and the number in the subscript indicates which agents has this relation. We generally evaluate a formula for 1 or more agents from a certain state given by (M,S) implies <formula>. The M here is the given model and S is the particular state. If this is not given, then it should hold for the whole model.
+                    <img src="imgs/kripkeModel.png" alt="Atom Values" style="width:589px;height:242px;">
+                        <figcaption>Figure 2</figcaption>
+                    </p>
+                    <p>
+
+                     We now briefly explain the different systems of epistemic logic with associated operators.
+                </p>
+
+                    <h3>System K<sub>(m)</sub></h3>
+                <div class="indent">
+                    <p>
+
+                        This system uses all (instances of) tautologies from propositional logic with
+                        an operator Ki and Mi which works the same as the <a href="https://en.wikipedia.org/wiki/Modal_logic">modal</a> necessity and possibility operators.The K stands for knowledge, and the i for agent i. K<sub>i</sub>p stands for agent i knows p.
+                        MiP stands for agent i considers p to be possible. With respect to the Kripke model this means that in all worlds agent 1 considers possible, p is true and in at least one world agent 2 considers possible, p is true for respectively the K and M operator. 
+                    </p>
+                </div>
+
+
+
+                    <h3>System S5<sub>(m)</sub></h3>
+                    <div class="indent">
+                    <p>
+                        System S5 consists of K plus a few axions. The added axioms are inter-related with the properties of the model. Axiom A3 states that everything that an agent knows is true. A4 defines that when an agent knows something, she also know this: positive introspection. A5 defines negative introspection. Both A4 and A5 draw a relation from a state to itself. A5* Looks like A4, if an agent considers something an epistemic alternative, she also knows that she holds this as an epistemic alternative.
+
+                    </p>
+                </div>
+
+                    <h3>Common knowledge</h3>
+                <div class="indent">
+                    <p>
+                    We now complete the system by adding the C and E operators. The operator E explains that every agent has the knowledge of a proposition from a given world. Hence, every agent knows the proposition within 1 alternative world away from the given world. The C operator on the other defines that everybody knows that everybody knows that everybody knows and so on. It is true for every agent from minimal 0 worlds away. 
+                    
+                    </p>
+                </div>
+
+                <h3>Implicit knowledge</h3>
+                <div class="indent">
+                    <p>
+                        The operator Ip states that it is implicitely known that p. This is true when p is true towards worlds with a union of relations, so all relations for all agents. Logical omniscience is an epistemological condition for implicit knowledge, but the agent may actually fail to realize this condition. 
+                    
+                    </p>
+                </div>
+
+                
+
+                </div>
+                <hr>
+
+                <h2>Implementation</h2>
+                <div class="indent">
+                    <p>Our model checker consists of two main parts. The first part offers a way to graphically construct a Kripke model and the second part a way to make inquiries upon said model.</p>
+                    <h3>Kripke Builder</h3>
+                    <div class="indent">
+                        <p>The builder is separated into two files. One to specify the graph with all of its nodes and edges, the other actually implements all of the functionality of the builder. Each node is identified by a unique id (a positive integer
+                            value) and holds a specific label (representative of its id). The nodes id can be used to request the specific truth values of the atoms it holds. For example, looking at figure 1 we can request the truth value of atom <i>p</i>                            at
+                            <i>node 1</i> and see that <i>p</i> holds. At <i>node 2</i> however <i>p</i> does not hold. Currently the builder supports up to five different atoms { <i>p, q, r, s, t</i> }. This is a consciously set limit, for clarity, as
+                            our model checker is capable of a theoretical infinite amount of atoms.
+                        </p>
+                        <img src="imgs/atomNodes.png" alt="Atom Values" style="width:589px;height:242px;">
+                        <figcaption>Figure 1</figcaption>
+                        <p>
+                            Relations between nodes are determined by the edges. Edges contain information about from which node (id) it came and to which node it is flowing. It also hold information about the relation between nodes regarding agents. Only specified agents, represented
+                            as smaller case letters, are considered to have access to a certain node. In the case of figure 1 only agent <i>a</i> has access to <i>node 2</i> from <i>node 1</i>, but both agent <i>a</i> and <i>b</i>                            can access <i>node 1</i> from <i>node 2</i>. Again a limit is set on the number of agents ({ <i>a, b, c, d, e</i> }) that can be used for the same reasons as mentioned earlier.
+                        </p>
+                    </div>
+                    <h3>Model Checker</h3>
+                    <div class="indent">
+                        <p>
+                            The model checker performs several steps in order to analyses a certain query. At the first it does some preprocessing in order for the string-processing to right. Afterwards it operates based on two main files. The first of which simply offers helper methods for accessing the model and evaluation atoms, the second parses a given sentence and analyzes
+                            it recursively (a preview of which is given by the output tables in the examples). We slice a formula and decide what the main operator is. We then split left and right parts from the operator and have the same procedure from these sub-sentences until we have single atoms which we can evaluate from the model. We store parent-child pairs from sentences and sub-sentences from the sentence so we can later evaluate upwards.
+                            Whenever the parser observes an operator such as K,C,I,E,M or a negation (acting as a sort of formula), then we simply remove this operator and first parse on normally, while we store the operator connected to the sub-sentence. We then evaluate the formula bottom-up so we can actually evaluate truth values. We perform this last-mentioned for every world. This makes it possible for us to evaluate the sentence if we come across one of the function operators. We check the  presence of functions in each layer before evaluating a higher layer.
+                        </p>
+                    </div>
+                </div>
+                <hr>
+                <h2>Supported Formulas</h2>
+                <div class="indent">
+                    <p>
+                    As mentioned earlier, the supported formulas are Ki,C,I,E,Mi,!,T,F. Remember to always use correct parenthesis. So write KaKb(p) as Ka(Kb(p)). The supported operators are ^,v,> and =. Which convert to conjunction, disjunction, implication and bi-implications signs respectively.
+                </p>
+                </div>
+                <h2>Examples</h2>
+                <div class="indent">
+                <p>
+                    A few examples how the system breaks down a formula. Remember that you can specify the world on the left side of the formula. All the formulas are evaluated with respect to the model in figure 3.
+                </p>
+                <p>
+                <img src="imgs/1.png" alt="Atom Values" style="width:589px;height:242px;">
+                        <figcaption>Figure 3</figcaption>
+                </p>
+
+
+                                <p>
+                <img src="imgs/11.png" alt="Atom Values" style="width:589px;height:242px;">
+                        <figcaption>Example of the K operator.</figcaption>
+                </p>
+
+                                <img src="imgs/M.png" alt="Atom Values" style="width:589px;height:242px;">
+                        <figcaption>Example of the M operator.</figcaption>
+                </p>
+
+                                <p>
+                <img src="imgs/3.png" alt="Atom Values" style="width:589px;height:242px;">
+                        <figcaption>Example of the C operator.</figcaption>
+                </p>
+
+                                <p>
+                <img src="imgs/4.png" alt="Atom Values" style="width:589px;height:242px;">
+                        <figcaption>Example of the E operator.</figcaption>
+                </p>
+
+                                <p>
+                <img src="imgs/5.png" alt="Atom Values" style="width:589px;height:242px;">
+                        <figcaption>Example of the I operator.</figcaption>
+                </p>
+
+                                <p>
+                <img src="imgs/6.png" alt="Atom Values" style="width:589px;height:242px;">
+                        <figcaption>Example of the breakdown of a complicated sentence.</figcaption>
+                </p>
+                </div>
+
+                <h2>Improvements</h2>
+                <div class="indent">
+                    <p>Currently our tool requires you to write your sentences in full form. A future improvement might consist of converting user input automatically based on precedence rules. For example one might consider the following commonly used precedence
+                        of logical operators<sup>1</sup>:
+                    </p>
+                    <table class="compactTable">
+                        <tr class="selectable">
+                            <td class="firstRow">Operator</td>
+                            <td class="firstRow">Precendence</td>
+                        </tr>
+                        <tr class="selectable">
+                            <td>¬</td>
+                            <td>1</td>
+                        </tr>
+                        <tr class="selectable">
+                            <td>∧</td>
+                            <td>2</td>
+                        </tr>
+                        <tr class="selectable">
+                            <td>∨</td>
+                            <td>3</td>
+                        </tr>
+                        <tr class="selectable">
+                            <td>→</td>
+                            <td>4</td>
+                        </tr>
+                        <tr class="selectable">
+                            <td>↔</td>
+                            <td>5</td>
+                        </tr>
+                    </table>
+                    <br>
+                    <br>
+                    <p>Another improvement is checking the cross browser compatibility. We did check for large discrepancies between different browser and everything apears to be fine. However differences between browsers can be subtle. Therefore ensuring
+                        cross browser compatibility can be time consuming. As this was largely irrelevant for the course and no major issues where found, no further development was done in this departement. As such we currently recommend using <a href="https://www.google.com/chrome">Chrome</a>                        as your preferred browser when viewing this website. Further, the system does not check tautologies. Tautologies should be true irrespectively of the model. At the current state of the system the system could return false for tautologies in cases where it tries to retrieve the truth-value of non-existing propositions. An easy improvement would be to check for tautologies in the pre-processing step. However, it is not  necessary to have this functionality because the system is more of a tool to check for truth-values with respect to an existing model for now. As last, we can improve by extending the current system to a system that supports beliefs.</p>
+                </div>
+                <hr>
+                <h2>References</h2>
+                <div class="indent">
+                    <p><sup>1</sup> O'Donnell, John; Hall, Cordelia; Page, Rex (2007), <i>Discrete Mathematics Using a Computer</i>, Springer, p. 120, ISBN 9781846285981.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

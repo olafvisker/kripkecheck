@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Logic Solver</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Logic solver for MAS course">
+
+    <script src="js/vis.js" type="text/javascript"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,300,400" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/vis.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="controlPanel">
+        <div id="controlPanelChild">
+            <div id="controlPanelHeader">
+                <a id="infoLink" href="info.html">ⓘ</a>
+                <h1>Control Panel</h1>
+                <hr>
+            </div>
+            <h2>Prover</h2>
+            <div class="indent inline">
+                <button type="button" onclick="prove()">⊢</button>
+                <input type="number" id="worldTxt" spellcheck="false" value="1">
+                <input type="text" id="proveTxt" spellcheck="false" oninput="autoCorrect(this)" value="Ka(p)→(¬C(q)→(Ka(p)∧¬C(q))">
+            </div>
+            <br>
+            <div id="truthTable" class="indent"></div>
+            <hr>
+            <h2>Nodes</h2>
+            <div class="indent">
+                <input id="atomSlider" type="range" value="2" min="1" max="5" onchange="numberOfAtomsChanged(this.value)" />
+                <table>
+                    <tr>
+                        <td class="cleanTable header">p</td>
+                        <td class="cleanTable header">q</td>
+                        <td class="cleanTable header">r</td>
+                        <td class="cleanTable header">s</td>
+                        <td class="cleanTable header">t</td>
+                    </tr>
+                    <tr>
+                        <td class="cleanTable">
+                            <label class="switch">
+                            <input id="p" type="checkbox" onclick="changeAtom(this);">
+                            <div class="slider round"></div>
+                        </label>
+                        </td>
+                        <td class="cleanTable">
+                            <label class="switch">
+                            <input id="q" type="checkbox" onclick="changeAtom(this);">
+                            <div class="slider round"></div>
+                        </label>
+                        </td>
+                        <td class="cleanTable">
+                            <label class="switch">
+                            <input id="r" type="checkbox" onclick="changeAtom(this);">
+                            <div class="slider round"></div>
+                        </label>
+                        </td>
+                        <td class="cleanTable">
+                            <label class="switch">
+                            <input id="s" type="checkbox" onclick="changeAtom(this);">
+                            <div class="slider round"></div>
+                        </label>
+                        </td>
+                        <td class="cleanTable">
+                            <label class="switch">
+                            <input id="t" type="checkbox" onclick="changeAtom(this);">
+                            <div class="slider round"></div>
+                        </label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <h2>Edges</h2>
+            <div class="indent">
+                <input id="agentSlider" type="range" value="2" min="1" max="5" onchange="numberOfAgentsChanged(this.value)" />
+                <table>
+                    <tr>
+                        <td class="cleanTable header">a</td>
+                        <td class="cleanTable header">b</td>
+                        <td class="cleanTable header">c</td>
+                        <td class="cleanTable header">d</td>
+                        <td class="cleanTable header">e</td>
+                    </tr>
+                    <tr>
+                        <td class="cleanTable">
+                            <label class="switch">
+                            <input id="a" type="checkbox" onclick="changeAgent();">
+                            <div class="slider round"></div>
+                        </label>
+                        </td>
+                        <td class="cleanTable">
+                            <label class="switch">
+                            <input id="b" type="checkbox" onclick="changeAgent();">
+                            <div class="slider round"></div>
+                        </label>
+                        </td>
+                        <td class="cleanTable">
+                            <label class="switch">
+                            <input id="c" type="checkbox" onclick="changeAgent();">
+                            <div class="slider round"></div>
+                        </label>
+                        </td>
+                        <td class="cleanTable">
+                            <label class="switch">
+                            <input id="d" type="checkbox" onclick="changeAgent();">
+                            <div class="slider round"></div>
+                        </label>
+                        </td>
+                        <td class="cleanTable">
+                            <label class="switch">
+                            <input id="e" type="checkbox" onclick="changeAgent();">
+                            <div class="slider round"></div>
+                        </label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <h2>Controls</h2>
+            <div class="indent">
+                <table>
+                    <tr class="selectable">
+                        <td class="firstRow">Shift + Click</td>
+                        <td>Creates a new node.</td>
+                    </tr>
+                    <tr class="selectable">
+                        <td class="firstRow">Crtl + Click</td>
+                        <td>Creates a new edge between the previous and newly selected node.</td>
+                    </tr>
+                    <tr class="selectable">
+                        <td class="firstRow">Delete </td>
+                        <td>Deletes the selected node or edge.</td>
+                    </tr>
+                    <tr class="selectable">
+                        <td class="firstRow">Scroll</td>
+                        <td>Zooms in and out.</td>
+                    </tr>
+                    <tr class="selectable">
+                        <td class="firstRow">Click + Drag</td>
+                        <td>Allows for navigation around the canvas and moving nodes and edges.</td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <h2>Keycodes</h2>
+            <div class="indent">
+                <table>
+                    <tr class="selectable">
+                        <td class="firstRow">!, ~</td>
+                        <td>¬</td>
+                    </tr>
+                    <tr class="selectable">
+                        <td class="firstRow">&, ^</td>
+                        <td>∧</td>
+                    </tr>
+                    <tr class="selectable">
+                        <td class="firstRow">|, v</td>
+                        <td>∨</td>
+                    </tr>
+                    <tr class="selectable">
+                        <td class="firstRow">></td>
+                        <td>→</td>
+                    </tr>
+                    <tr class="selectable">
+                        <td class="firstRow">=</td>
+                        <td>↔</td>
+                    </tr>
+                    <tr class="selectable">
+                        <td class="firstRow">T</td>
+                        <td>⊤</td>
+                    </tr>
+                    <tr class="selectable">
+                        <td class="firstRow">F</td>
+                        <td>⊥</td>
+                    </tr>
+                </table>
+                <p><br>For the list of functions and how to use them check the information tab in the upper left corner.</p>
+            </div>
+            <hr>
+            <h2>Help</h2>
+            <div class="indent">
+                <p>Create nodes and edges using the provided controls above in order to create a Kripke model.</p>
+                <hr>
+                <p>The nodes and edges sliders allow you to set the atoms and agents to be considered respectively. By setting the toggle switches for the nodes you are able to set the truth value of a selected node (the node highlighted in yellow). The
+                    toggle switches for the agents allows you to set the access it has to a certain node. You can do this by selecting an edge, which will thicken upon selection, and setting the toggle switches.</p>
+                <hr>
+                <p> Use the first inputbox at the prover section to select a desired world and the second inputbox to make inquiries about said world.<br> Note that currently you are required to use full form when writing logical sentences.
+                </p>
+            </div>
+            <hr>
+            <h2>Credits</h2>
+            <div class="indent">
+                <table>
+                    <tr class="selectable">
+                        <td class="firstRow">Olaf Visker</td>
+                        <td>
+                            <a href="mailto:olafvisker@gmail.com">olafvisker@gmail.com</a>
+                        </td>
+                    </tr>
+                    <tr class="selectable">
+                        <td class="firstRow">Lennart van de Guchte</td>
+                        <td>
+                            <a href="mailto:lvandeguchte@hotmail.nl">lvandeguchte@hotmail.nl</a>
+                        </td>
+                    </tr>
+                    <tr class="selectable">
+                        <td class="firstRow">Leon Pater</td>
+                        <td>
+                            <a href="mailto:ljjpater@hotmail.com">ljjpater@hotmail.com</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="graphCanvas"></div>
+    <script src="js/graph.js" type="text/javascript"></script>
+    <script src="js/grapheval.js" type="text/javascript"></script>
+    <script src="js/canvas.js" type="text/javascript"></script>
+    <script src="js/prover.js" type="text/javascript"></script>
+</body>
+
+</html>
